@@ -9,9 +9,11 @@ const {
   logoutController,
   currentController,
   subscriptionController,
+  uploadUserAvatarController,
 } = require("../../controllers/usersController");
 const { asyncWrapper } = require("../../helpers/apiHelpes");
 const { authMiddleware } = require("../../middlewares/authMiddleware");
+const { uploadMiddleware } = require("../../middlewares/uploadMiddleware");
 
 const router = new express.Router();
 router
@@ -27,6 +29,13 @@ router
 router.route("/login").get(postUserValidation, asyncWrapper(loginController));
 router.route("/logout").post(authMiddleware, asyncWrapper(logoutController));
 router.route("/current").get(authMiddleware, asyncWrapper(currentController));
+router
+  .route("/avatars")
+  .patch(
+    uploadMiddleware.single("avatar"),
+    authMiddleware,
+    asyncWrapper(uploadUserAvatarController)
+  );
 
 router.use((_, res, __) => {
   res.status(404).json({
