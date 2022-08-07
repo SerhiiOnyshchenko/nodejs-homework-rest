@@ -26,7 +26,7 @@ router
 router
   .route("/registration")
   .post(postUserValidation, asyncWrapper(registrationController));
-router.route("/login").get(postUserValidation, asyncWrapper(loginController));
+router.route("/login").post(postUserValidation, asyncWrapper(loginController));
 router.route("/logout").post(authMiddleware, asyncWrapper(logoutController));
 router.route("/current").get(authMiddleware, asyncWrapper(currentController));
 router
@@ -42,7 +42,7 @@ router.use((_, res, __) => {
     status: "error",
     code: 404,
     message:
-      "Use api on routes: POST /users/registration, GET /users/login, POST /users/logout, GET /users/current",
+      "Use api on routes: POST /users/registration, POST /users/login, POST /users/logout, GET /users/current",
     data: "Not found",
   });
 });
