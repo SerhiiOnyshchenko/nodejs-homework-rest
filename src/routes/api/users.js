@@ -2,6 +2,7 @@ const express = require("express");
 const {
   postUserValidation,
   patchUserSubscriptionValidation,
+  emailBodyValidation,
 } = require("../../middlewares/validationMiddleware");
 const {
   registrationController,
@@ -10,6 +11,8 @@ const {
   currentController,
   subscriptionController,
   uploadUserAvatarController,
+  verificationController,
+  verifyRepiteController,
 } = require("../../controllers/usersController");
 const { asyncWrapper } = require("../../helpers/apiHelpes");
 const { authMiddleware } = require("../../middlewares/authMiddleware");
@@ -26,6 +29,12 @@ router
 router
   .route("/registration")
   .post(postUserValidation, asyncWrapper(registrationController));
+router
+  .route("/verify/:verificationToken")
+  .get(asyncWrapper(verificationController));
+router
+  .route("/verify")
+  .post(emailBodyValidation, asyncWrapper(verifyRepiteController));
 router.route("/login").post(postUserValidation, asyncWrapper(loginController));
 router.route("/logout").post(authMiddleware, asyncWrapper(logoutController));
 router.route("/current").get(authMiddleware, asyncWrapper(currentController));
