@@ -3,6 +3,7 @@ const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const gravatar = require("gravatar");
 // ? const fs = require("fs");
+const path = require("path");
 const Jimp = require("jimp");
 const { User } = require("../db/usersModel");
 const {
@@ -150,7 +151,7 @@ const uploadUserAvatar = async (id, file) => {
   //   if (err) console.log(err);
   // });
 
-  const avatarURL = `http://localhost:${PORT}/api/avatars/download/${file.filename}`;
+  const avatarURL = path.resolve(`./public/avatars/${file.filename}`);
   await User.findOneAndUpdate({ _id: id }, { avatarURL });
   return avatarURL;
 };
