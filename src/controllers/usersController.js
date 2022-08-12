@@ -4,6 +4,8 @@ const {
   logout,
   patchUserSubscription,
   uploadUserAvatar,
+  verificationUser,
+  verifyRepite,
 } = require("../services/usersService");
 
 const subscriptionController = async (req, res) => {
@@ -19,6 +21,17 @@ const registrationController = async (req, res) => {
   res.status(201).json({ user });
 };
 
+const verificationController = async (req, res) => {
+  const { verificationToken } = req.params;
+  await verificationUser(verificationToken);
+  res.json({ message: "Verification successful" });
+};
+
+const verifyRepiteController = async (req, res) => {
+  const { email } = req.body;
+  await verifyRepite(email);
+  res.json({ message: "Verification email sent" });
+};
 const loginController = async (req, res) => {
   const { email, password } = req.body;
   const { token, userFind: user } = await login({ email, password });
@@ -49,4 +62,6 @@ module.exports = {
   currentController,
   subscriptionController,
   uploadUserAvatarController,
+  verificationController,
+  verifyRepiteController,
 };
